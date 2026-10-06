@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 시대, 당신의 전공은 무엇이 되는가 · 실습 워크북</title>
+<meta name="description" content="서울시립대 AICOSS 월간 AI 특강 실습 워크북. 프롬프트 6단계 빌더와 내 전공 × AI 한 줄 작성.">
+<meta property="og:title" content="AI에게 일 시키는 법 · 실습 워크북">
+<meta property="og:description" content="프롬프트 6단계(목표·맥락·자료·조건·형식·기준) 빌더, 상황별 예시 7개, 내 전공 × AI 한 줄">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#ffffff; --surface:#f4f4f4; --line:#e5e5e5;
+  --ink:#181818; --sub:#555555; --mute:#7a7a7a; --accent:#FF5A4F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#181818;--surface:#2a2a2a;--line:#555555;--ink:#f4f4f4;--sub:#e5e5e5;--mute:#7a7a7a}
+}
+:root[data-theme="dark"]{--bg:#181818;--surface:#2a2a2a;--line:#555555;--ink:#f4f4f4;--sub:#e5e5e5;--mute:#7a7a7a}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:32px 16px 64px}
+header .tag{display:inline-block;font-size:12px;font-weight:700;color:var(--sub);background:var(--surface);border-radius:999px;padding:4px 12px}
+h1{font-size:34px;line-height:1.25;margin:16px 0 8px;font-weight:900;letter-spacing:-.02em}
+.lead{color:var(--sub);margin:0}
+section{margin-top:48px}
+h2{font-size:18px;margin:0 0 4px;font-weight:700}
+.h2sub{color:var(--mute);font-size:14px;margin:0 0 16px}
+.hero{background:var(--surface);border-radius:16px;padding:24px 16px;margin-top:24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 16px;font-size:14px;font-family:inherit;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.field{margin-bottom:16px}
+.field label{display:flex;align-items:baseline;gap:8px;font-weight:700;margin-bottom:4px}
+.field label .n{color:var(--accent);font-weight:900}
+.field label .hint{font-weight:400;color:var(--mute);font-size:14px}
+textarea,input[type=text]{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:12px;font-family:inherit;font-size:16px;line-height:1.5;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.out{margin-top:16px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;white-space:pre-wrap;font-size:14px;min-height:80px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.btn.primary{background:var(--accent);color:#ffffff}
+.btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.compare div{background:var(--surface);border-radius:12px;padding:16px}
+.compare b{display:block;margin-bottom:4px;font-size:14px}
+.compare p{margin:0;font-size:14px;color:var(--sub)}
+.list{margin:0;padding:0;list-style:none}
+.list li{padding:16px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.list span{display:block;color:var(--sub);font-size:14px;margin-top:4px}
+.check li{display:flex;gap:12px;align-items:flex-start}
+.check input{width:24px;height:24px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto}
+.mine{background:var(--surface);border-left:4px solid var(--accent);border-radius:16px;padding:24px 16px}
+.mine .sentence{font-size:18px;font-weight:700;margin:12px 0 0;line-height:1.5}
+.mine .grid{display:grid;grid-template-columns:1fr;gap:8px}
+footer{margin-top:64px;color:var(--mute);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:480px){h1{font-size:32px}.compare{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="tag">서울시립대 AICOSS 월간 AI 특강 · 2026.10.6</span>
+  <h1>AI에게 일 시키는 법, 지금 바로 해보기</h1>
+  <p class="lead">강의에서 본 프롬프트 6단계를 빈칸만 채워서 써 보는 페이지입니다. 완성된 지시문을 복사해 챗GPT·클로드·제미나이 어디에든 붙여 넣으면 됩니다.</p>
+</header>
+
+<div class="hero" id="builder">
+  <h2>프롬프트 6단계 빌더</h2>
+  <p class="h2sub">상황을 고르면 예시가 채워집니다. 내 상황에 맞게 고친 뒤 복사하세요.</p>
+  <div class="chips" id="chips" role="group" aria-label="예시 상황"></div>
+
+  <div class="field"><label for="f0"><span class="n">1</span>목표<span class="hint">무엇을 얻고 싶은가</span></label><textarea id="f0" rows="2"></textarea></div>
+  <div class="field"><label for="f1"><span class="n">2</span>맥락<span class="hint">나는 누구고, 왜 필요한가</span></label><textarea id="f1" rows="2"></textarea></div>
+  <div class="field"><label for="f2"><span class="n">3</span>자료<span class="hint">붙여 넣을 원문·파일</span></label><textarea id="f2" rows="2"></textarea></div>
+  <div class="field"><label for="f3"><span class="n">4</span>조건<span class="hint">지킬 것, 하지 말 것</span></label><textarea id="f3" rows="2"></textarea></div>
+  <div class="field"><label for="f4"><span class="n">5</span>형식<span class="hint">결과를 어떤 모양으로</span></label><textarea id="f4" rows="2"></textarea></div>
+  <div class="field"><label for="f5"><span class="n">6</span>기준<span class="hint">무엇이면 완성인가</span></label><textarea id="f5" rows="2"></textarea></div>
+
+  <div class="out" id="out" aria-live="polite"></div>
+  <div class="row">
+    <button class="btn primary" id="copy">지시문 복사</button>
+    <button class="btn ghost" id="clear">비우기</button>
+  </div>
+</div>
+
+<section>
+  <h2>요령은 끝났고, 명세가 남았다</h2>
+  <p class="h2sub">추론 모델이 단계별 사고를 알아서 하면서 예전 주문은 힘을 잃었습니다.</p>
+  <div class="compare">
+    <div><b>예전 요령</b><p>"팁 줄게" · "심호흡하고 단계별로" · "너는 최고의 전문가야" · "절대 ~하지 마"를 잔뜩</p></div>
+    <div><b>지금 방식</b><p>목표·맥락·자료·조건·형식·기준을 요구사항 명세처럼. 맥락과 기준에는 내 전공 경험이 들어간다</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>실습 전에 한 가지</h2>
+  <ul class="list">
+    <li><b>임시 채팅으로 해 보세요</b><span>챗GPT 임시 채팅을 켜고 맞춤 설정을 끄면, 내 메모리 없이 지시문만의 힘을 볼 수 있습니다.</span></li>
+    <li><b>같은 지시문을 세 모델에</b><span>챗GPT·클로드·제미나이에 똑같이 넣고 결과를 비교해 보세요. 일마다 맞는 모델이 다릅니다.</span></li>
+    <li><b>인용할 문장은 원문을 엽니다</b><span>AI가 단 출처에도 틀린 게 섞입니다. 과제에 쓰면 사용 사실도 밝힙니다.</span></li>
+  </ul>
+</section>
+
+<section class="mine" id="mine">
+  <h2>내 전공 × AI, 한 줄로</h2>
+  <p class="h2sub">틀려도 됩니다. 이번 학기에 세 번 고쳐 쓰면 자소서 첫 문장이 됩니다.</p>
+  <div class="grid">
+    <input type="text" id="m0" placeholder="내 전공 (예: 도시행정)">
+    <input type="text" id="m1" placeholder="AI에게 맡길 일 (예: 공공데이터 정리와 대시보드 제작)">
+    <input type="text" id="m2" placeholder="내가 하는 일 (예: 도시에 AI를 어디에 넣을지 판단)">
+  </div>
+  <p class="sentence" id="ms"></p>
+  <div class="row"><button class="btn primary" id="mcopy">문장 복사</button></div>
+</section>
+
+<section>
+  <h2>내일 아침, 세 가지</h2>
+  <ul class="list check" id="todo">
+    <li><input type="checkbox" id="t0"><label for="t0"><b>AI에게 일 하나를 시킨다</b><span>위 빌더로 만든 지시문을 과제나 자소서에 한 번.</span></label></li>
+    <li><input type="checkbox" id="t1"><label for="t1"><b>'내 전공 × AI' 한 줄을 저장한다</b><span>휴대폰 메모에 붙여 두고 한 달 뒤 다시 고친다.</span></label></li>
+    <li><input type="checkbox" id="t2"><label for="t2"><b>링크가 생기는 결과물 하나</b><span>웹페이지든 분석이든. 그 링크가 면접에서 할 이야기가 됩니다.</span></label></li>
+  </ul>
+</section>
+
+<footer>김덕진 · IT커뮤니케이션연구소(ITCL) · 서울시립대 경영학부 겸임교수<br>이 페이지에 입력한 내용은 이 기기에만 저장됩니다.</footer>
+</div>
+<div class="toast" id="toast">복사했습니다</div>
+
+<script>
+const EX = {
+  "과제 리서치": ["서울시 공유자전거(따릉이) 정책의 효과를 분석하는 리포트 뼈대를 만든다.",
+    "나는 도시행정 전공 3학년이다. 교수님은 근거 있는 주장을 가장 중요하게 보고, 분량은 A4 5장이다.",
+    "(과제 요구사항을 여기에 붙여 넣기)",
+    "서울시·서울연구원·학술논문 자료만 쓴다. 확인되지 않은 수치에는 [추정]을 붙인다.",
+    "이용·교통·재정 세 축으로 나눈 표. 칸마다 출처와 연도를 단다.",
+    "표만 보고도 근거가 충분한지 판단할 수 있으면 완성. 마지막에 이 분석의 약점 3개를 스스로 적는다."],
+  "발표 준비": ["다음 주 수업 발표의 3분 스크립트와 슬라이드 구성을 만든다.",
+    "청중은 같은 과 학생 30명이고, 발표 뒤 질의응답이 점수에 들어간다.",
+    "(내 발표 논지와 참고 자료를 붙여 넣기)",
+    "슬라이드는 7장 이하. 전문용어는 처음 나올 때 한 줄로 풀어 쓴다.",
+    "① 슬라이드별 제목과 핵심 문장 ② 말로 하는 스크립트 ③ 예상 질문 5개와 짧은 답",
+    "스크립트를 소리 내어 읽었을 때 3분 안에 끝나면 완성."],
+  "기업 분석": ["지원할 회사의 최근 3년 사업 방향을 정리하고, 내 경험과 이어지는 지점을 찾는다.",
+    "나는 경영학부 4학년이고 이 회사 마케팅 직무에 지원한다. 자기소개서 문장은 내가 직접 쓴다.",
+    "(회사 이름, 채용공고 원문, 내 경험 목록을 붙여 넣기)",
+    "회사 공식 발표·사업보고서·주요 언론 기사만 쓴다. 자소서 문장을 대신 쓰지 않는다.",
+    "① 사업 방향 요약 표 ② 내 경험 3개와 연결점 ③ 면접에서 받을 만한 질문",
+    "연결점마다 근거 자료가 하나씩 붙어 있으면 완성."],
+  "모의 면접": ["실제 면접처럼 꼬리질문을 받으며 답변을 연습한다.",
+    "나는 이 회사 신입 공채 면접을 앞두고 있다. 'AI로 해 본 프로젝트'를 꼭 물어본다고 들었다.",
+    "(채용공고와 내 자기소개서를 붙여 넣기)",
+    "너는 면접관이다. 질문은 한 번에 하나씩 하고, 내 답을 듣고 나서 꼬리질문을 한다. 칭찬은 하지 않는다.",
+    "질문 → 내 답 → 꼬리질문 순으로 대화. 끝나면 답변별 보완점을 표로.",
+    "질문 5개를 마치고 내가 '끝'이라고 하면 평가를 시작한다."],
+  "시험 공부": ["이번 주 강의 내용을 내가 제대로 이해했는지 점검한다.",
+    "다음 주가 중간고사이고, 시험은 용어 중심의 객관식·단답형이다.",
+    "(강의 슬라이드나 필기를 붙여 넣기. NotebookLM에 올리면 더 좋다)",
+    "정답을 바로 알려주지 않는다. 내가 틀리면 힌트를 먼저 준다. 자료에 없는 내용은 묻지 않는다.",
+    "문제 10개를 하나씩 낸다. 끝나면 내가 약한 개념 목록을 정리한다.",
+    "10문제 중 8개 이상 맞히면 다음 단원으로 넘어간다."],
+  "포트폴리오 웹페이지": ["취업용 원페이지 포트폴리오 웹페이지를 만든다.",
+    "나는 통계학과 4학년이고, 데이터 분석 직무에 지원한다. 코딩은 거의 못 한다.",
+    "(내 소개 3줄, 프로젝트 2개 설명과 링크, 연락처를 붙여 넣기)",
+    "HTML 파일 하나로 만든다. 휴대폰에서도 보기 좋아야 한다. 과장된 문구는 쓰지 않는다.",
+    "상단 소개 → 프로젝트 카드 2개 → 연락처. 카드에는 문제·내가 한 일·결과를 한 줄씩.",
+    "휴대폰으로 열어서 가로 스크롤 없이 한 번에 읽히면 완성."],
+  "세 모델 비교": ["같은 지시문을 챗GPT·클로드·제미나이에 넣고 결과 차이를 본다.",
+    "나는 일마다 어떤 AI를 쓰면 좋을지 감을 잡고 싶다.",
+    "(위 예시 중 하나의 지시문을 그대로 쓰기)",
+    "세 모델 모두 같은 지시문, 같은 자료로. 임시 채팅에서 실행한다.",
+    "정확성·문체·출처·속도를 1~5점으로 매긴 비교표.",
+    "다음에 이 일을 맡길 모델을 한 줄로 고를 수 있으면 완성."]
+};
+const LBL=["목표","맥락","자료","조건","형식","기준"];
+const $=s=>document.querySelector(s);
+const F=[...Array(6)].map((_,i)=>$("#f"+i));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+function toast(m){const t=$("#toast");t.textContent=m||"복사했습니다";t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1400)}
+function copy(txt){(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast()).catch(()=>{const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast()}catch(e){toast("길게 눌러 복사하세요")}a.remove()})}
+function render(){
+  const parts=F.map((f,i)=>f.value.trim()?`[${LBL[i]}]\n${f.value.trim()}`:"").filter(Boolean);
+  $("#out").textContent=parts.length?parts.join("\n\n"):"빈칸을 채우면 여기에 완성된 지시문이 나타납니다.";
+  store.set("wb_fields",JSON.stringify(F.map(f=>f.value)));
+}
+const chips=$("#chips");
+Object.keys(EX).forEach(k=>{const b=document.createElement("button");b.className="chip";b.textContent=k;b.setAttribute("aria-pressed","false");
+  b.onclick=()=>{chips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");EX[k].forEach((v,i)=>F[i].value=v);render()};chips.appendChild(b)});
+F.forEach(f=>f.addEventListener("input",render));
+$("#copy").onclick=()=>copy($("#out").textContent);
+$("#clear").onclick=()=>{F.forEach(f=>f.value="");chips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed","false"));render()};
+try{const s=JSON.parse(store.get("wb_fields")||"null");if(Array.isArray(s))s.forEach((v,i)=>{if(F[i])F[i].value=v||""})}catch(e){}
+render();
+const M=[0,1,2].map(i=>$("#m"+i));
+function mrender(){const [a,b,c]=M.map(m=>m.value.trim());
+  $("#ms").textContent=`나는 ${a||"○○"}을(를) 전공했고, AI에게 ${b||"○○"}을(를) 맡기고, ${c||"○○"}하는 사람이다.`;
+  store.set("wb_mine",JSON.stringify(M.map(m=>m.value)))}
+M.forEach(m=>m.addEventListener("input",mrender));
+try{const s=JSON.parse(store.get("wb_mine")||"null");if(Array.isArray(s))s.forEach((v,i)=>M[i].value=v||"")}catch(e){}
+mrender();
+$("#mcopy").onclick=()=>copy($("#ms").textContent);
+[0,1,2].forEach(i=>{const c=$("#t"+i);c.checked=store.get("wb_t"+i)==="1";c.onchange=()=>store.set("wb_t"+i,c.checked?"1":"0")});
+</script>
+</body>
+</html>
